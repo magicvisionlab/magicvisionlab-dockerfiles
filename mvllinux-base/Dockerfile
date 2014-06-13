@@ -1,6 +1,7 @@
 FROM ubuntu:14.04
 MAINTAINER ueck@net-labs.de
 ENV DEBIAN_FRONTEND noninteractive
+ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 
 # enable ubuntu extras
 RUN echo deb http://extras.ubuntu.com/ubuntu trusty main >> /etc/apt/sources.list;\
@@ -18,14 +19,15 @@ RUN apt-get update; \
 RUN apt-get install -y \
     software-properties-common \
     python-software-properties \
-    python-pip \
-    libzmq-dev \
     python2.7-dev \
+    python-distribute \
+    python-pip \
     build-essential \
     devscripts \
     supervisor \
-    openssh-server \
     wget
+
+RUN pip --no-input --exists-action=w install --upgrade pip
 
 # Fake a fuse install, since build cannot run in privileged mode
 RUN apt-get install libfuse2
@@ -59,9 +61,8 @@ RUN update-alternatives --set java /usr/lib/jvm/java-7-oracle/jre/bin/java
 
 # install basic packages for magicvisionlab development
 RUN apt-get install -y \
-    libopencv-dev \
+    libzmq-dev \
     libboost-all-dev \
-    freeglut3-dev \
     libatlas-dev \
     libavcodec-dev \
     libavformat-dev \
@@ -69,17 +70,12 @@ RUN apt-get install -y \
     libbullet-dev \
     libdc1394-22-dev \
     libflann-dev \
-    libftgl-dev \
-    libfreetype6-dev \
-    libglew-dev \
     libeigen3-dev \
     libexpat1-dev \
     libfreeimage-dev \
-    libglfw-dev \
     libhdf5-dev \
     libjpeg-dev \
     liblapack-dev \
-    libmotif-dev \
     libprotobuf-dev \
     libmsgpack-dev \
     libqhull-dev \
@@ -87,14 +83,6 @@ RUN apt-get install -y \
     libreadline-dev \
     libtbb-dev \
     libusb-dev \
-    libwxgtk3.0-dev \
-    libx11-dev \
-    libxft-dev \
-    libxi-dev \
-    libxslt1-dev \
-    mesa-common-dev \
-    qtbase5-dev \
-    qtbase5-dev-tools \
     zlib1g-dev \
     vim \
     vim-scripts \
@@ -107,15 +95,13 @@ RUN apt-get install -y \
     subversion \
     bzr \
     mercurial \
-    nvidia-cg-dev \
-    nvidia-cuda-dev \
-    nvidia-cuda-gdb \
-    nvidia-cuda-toolkit \
-    nvidia-opencl-dev \
-    libthrust-dev \
-    libxmu-dev \
     binutils-gold \
     cmake \
-    cmake-gui
+    cmake-curses-gui \
+    python-numpy \
+    python-scipy \
+    swig \
+    ant
+
 
 
