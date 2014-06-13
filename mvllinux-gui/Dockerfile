@@ -2,6 +2,11 @@ FROM magicvisionlab/mvllinux-base
 MAINTAINER ueck@net-labs.de
 ENV DEBIAN_FRONTEND noninteractive
 
+# enable ubuntu multiverse
+RUN echo deb http://security.ubuntu.com/ubuntu trusty-security multiverse >> /etc/apt/sources.list;\
+    echo deb-src http://security.ubuntu.com/ubuntu trusty-security multiverse >> /etc/apt/sources.list;\
+    apt-get update;
+
 # install x-windows subsystem
 RUN apt-get -y --force-yes install x-window-system
 RUN apt-get install -y binutils
@@ -12,7 +17,7 @@ RUN apt-get install -y libgtk2.0-0
 RUN apt-get install -y twm
 
 RUN apt-get install -y nvidia-331
-RUN nvidia-xconfig -a --use-display-device=None --enable-all-gpus --virtual=1280x1024
+#RUN nvidia-xconfig -a --use-display-device=None --enable-all-gpus --virtual=1280x1024
 
 # install basic packages for magicvisionlab gui development
 RUN apt-get install -y \
