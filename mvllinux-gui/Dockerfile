@@ -3,7 +3,9 @@ MAINTAINER ueck@net-labs.de
 ENV DEBIAN_FRONTEND noninteractive
 
 # enable ubuntu multiverse
-RUN echo deb http://security.ubuntu.com/ubuntu trusty-security multiverse >> /etc/apt/sources.list;\
+RUN echo deb http://archive.ubuntu.com/ubuntu trusty multiverse >> /etc/apt/sources.list;\
+    echo deb-src http://archive.ubuntu.com/ubuntu trusty multiverse >> /etc/apt/sources.list;\
+    echo deb http://security.ubuntu.com/ubuntu trusty-security multiverse >> /etc/apt/sources.list;\
     echo deb-src http://security.ubuntu.com/ubuntu trusty-security multiverse >> /etc/apt/sources.list;\
     apt-get update;
 
@@ -37,12 +39,6 @@ RUN apt-get install -y \
     mesa-common-dev \
     qtbase5-dev \
     qtbase5-dev-tools \
-    nvidia-cg-dev \
-    nvidia-cuda-dev \
-    nvidia-cuda-gdb \
-    nvidia-cuda-toolkit \
-    nvidia-opencl-dev \
-    libthrust-dev \
     libxmu-dev \
     coriander \
     libv4l-dev \
@@ -53,3 +49,12 @@ RUN apt-get install -y \
     libglademm-2.4-1c2a \
     libgtkmm-2.4-1c2a \
     libgtkglextmm-x11-1.2-dev
+
+RUN apt-get install -y \
+    nvidia-cg-dev \
+    nvidia-cuda-dev \
+    nvidia-cuda-gdb \
+    nvidia-cuda-toolkit \
+    nvidia-opencl-dev \
+    libthrust-dev
+
