@@ -2,6 +2,10 @@ FROM magicvisionlab/mvllinux-base
 MAINTAINER ueck@net-labs.de
 ENV DEBIAN_FRONTEND noninteractive
 
+# LOCAL BUILD ONLY - USE AptProxy
+#RUN echo "Use Localhost as AptProxy http://"`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`":3142"
+#RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | sudo tee /etc/apt/apt.conf.d/02proxy
+
 # enable ubuntu multiverse
 RUN echo deb http://archive.ubuntu.com/ubuntu trusty multiverse >> /etc/apt/sources.list && \
     echo deb-src http://archive.ubuntu.com/ubuntu trusty multiverse >> /etc/apt/sources.list && \
@@ -18,12 +22,16 @@ RUN apt-get -y --force-yes install x-window-system && \
     apt-get install -y libgtk2.0-0 && \
     apt-get install -y twm
 
-RUN apt-get install -y nvidia-331
-#RUN nvidia-xconfig -a --use-display-device=None --enable-all-gpus --virtual=1280x1024
 
 # install basic packages for magicvisionlab gui development
 RUN apt-get install -y \
     cmake-gui \
+    libqt4-dev \
+    libqt4-dev-bin \
+    libqt4-opengl-dev \
+    libqt4-qt3support \
+    libqt4-sql-sqlite \
+    libqtwebkit-dev \
     libopencv-dev \
     freeglut3-dev \
     libftgl-dev \
@@ -40,21 +48,10 @@ RUN apt-get install -y \
     qtbase5-dev \
     qtbase5-dev-tools \
     libxmu-dev \
-    coriander \
-    libv4l-dev \
-    qv4l2 \
-    v4l2ucp \
-    v4l-conf \
     libglade2-0 \
     libglademm-2.4-1c2a \
     libgtkmm-2.4-1c2a \
     libgtkglextmm-x11-1.2-dev
 
-RUN apt-get install -y \
-    nvidia-cg-dev \
-    nvidia-cuda-dev \
-    nvidia-cuda-gdb \
-    nvidia-cuda-toolkit \
-    nvidia-opencl-dev \
-    libthrust-dev
-
+# CLEANUP LOCAL PROXY
+#RUN rm -f /etc/apt/apt.conf.d/02proxy

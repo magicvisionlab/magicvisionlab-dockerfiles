@@ -3,6 +3,10 @@ MAINTAINER ueck@net-labs.de
 ENV DEBIAN_FRONTEND noninteractive
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 
+# LOCAL BUILD ONLY - USE AptProxy
+#RUN echo "Use Localhost as AptProxy http://"`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`":3142"
+#RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | sudo tee /etc/apt/apt.conf.d/02proxy
+
 # enable ubuntu extras
 RUN echo deb http://extras.ubuntu.com/ubuntu trusty main >> /etc/apt/sources.list;\
     echo deb-src http://extras.ubuntu.com/ubuntu trusty main >> /etc/apt/sources.list;\
@@ -67,7 +71,6 @@ RUN apt-get install -y \
     libavformat-dev \
     libblas-dev \
     libbullet-dev \
-    libdc1394-22-dev \
     libflann-dev \
     libeigen3-dev \
     libexpat1-dev \
@@ -78,15 +81,14 @@ RUN apt-get install -y \
     libprotobuf-dev \
     libmsgpack-dev \
     libqhull-dev \
-    libraw1394-dev \
     libreadline-dev \
     libtbb-dev \
-    libusb-dev \
     zlib1g-dev \
     vim \
     vim-scripts \
     wget \
     ctags \
+    gdb \
     gpm \
     git \
     rsync \
@@ -101,3 +103,6 @@ RUN apt-get install -y \
     python-scipy \
     swig \
     ant
+
+# CLEANUP LOCAL PROXY
+#RUN rm -f /etc/apt/apt.conf.d/02proxy
