@@ -30,33 +30,32 @@ RUN apt-get install -y \
 RUN pip --no-input --exists-action=w install --upgrade pip
 
 # Fake a fuse install, since build cannot run in privileged mode
-RUN apt-get install libfuse2
-RUN cd /tmp ; apt-get download fuse
-RUN cd /tmp ; dpkg-deb -x fuse_* .
-RUN cd /tmp ; dpkg-deb -e fuse_*
-RUN cd /tmp ; rm fuse_*.deb
-RUN cd /tmp ; echo -en '#!/bin/bash\nexit 0\n' > DEBIAN/postinst
-RUN cd /tmp ; dpkg-deb -b . /fuse.deb
-RUN cd /tmp ; dpkg -i /fuse.deb
+RUN apt-get install libfuse2 && \
+    cd /tmp ; apt-get download fuse && \
+    cd /tmp ; dpkg-deb -x fuse_* . && \
+    cd /tmp ; dpkg-deb -e fuse_* && \
+    cd /tmp ; rm fuse_*.deb && \
+    cd /tmp ; echo -en '#!/bin/bash\nexit 0\n' > DEBIAN/postinst && \
+    cd /tmp ; dpkg-deb -b . /fuse.deb && \
+    cd /tmp ; dpkg -i /fuse.deb
 # end hack
 
 # install oracle java 1.7
 WORKDIR /tmp
-RUN wget --progress=bar --no-check-certificate -O /tmp/jdk-7u60-linux-x64.tar.gz --header "Cookie: oraclelicense=a" http://download.oracle.com/otn-pub/java/jdk/7u60-b19/jdk-7u60-linux-x64.tar.gz
-
-RUN tar xzf /tmp/jdk-7u60-linux-x64.tar.gz
-RUN mkdir -p /usr/lib/jvm/java-7-oracle
-RUN mv jdk1.7.0_60/jre /usr/lib/jvm/java-7-oracle/jre
-RUN mv jdk1.7.0_60/lib /usr/lib/jvm/java-7-oracle/lib
-RUN mv jdk1.7.0_60/include /usr/lib/jvm/java-7-oracle/include
-RUN mv jdk1.7.0_60/bin /usr/lib/jvm/java-7-oracle/bin
-RUN mv jdk1.7.0_60/man /usr/lib/jvm/java-7-oracle/man
-RUN mv jdk1.7.0_60/db /usr/lib/jvm/java-7-oracle/db
-
-RUN rm -rf jdk1.7.0_60 && rm /tmp/jdk-7u60-linux-x64.tar.gz
-RUN chown root:root -R /usr/lib/jvm/java-7-oracle
-RUN update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-7-oracle/jre/bin/java 1
-RUN update-alternatives --set java /usr/lib/jvm/java-7-oracle/jre/bin/java
+RUN wget --progress=bar --no-check-certificate -O /tmp/jdk-7u60-linux-x64.tar.gz \
+         --header "Cookie: oraclelicense=a" http://download.oracle.com/otn-pub/java/jdk/7u60-b19/jdk-7u60-linux-x64.tar.gz && \
+    tar xzf /tmp/jdk-7u60-linux-x64.tar.gz && \
+    mkdir -p /usr/lib/jvm/java-7-oracle && \
+    mv jdk1.7.0_60/jre /usr/lib/jvm/java-7-oracle/jre && \
+    mv jdk1.7.0_60/lib /usr/lib/jvm/java-7-oracle/lib && \
+    mv jdk1.7.0_60/include /usr/lib/jvm/java-7-oracle/include && \
+    mv jdk1.7.0_60/bin /usr/lib/jvm/java-7-oracle/bin && \
+    mv jdk1.7.0_60/man /usr/lib/jvm/java-7-oracle/man && \
+    mv jdk1.7.0_60/db /usr/lib/jvm/java-7-oracle/db && \
+    rm -rf jdk1.7.0_60 && rm /tmp/jdk-7u60-linux-x64.tar.gz && \
+    chown root:root -R /usr/lib/jvm/java-7-oracle && \
+    update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-7-oracle/jre/bin/java 1 && \
+    update-alternatives --set java /usr/lib/jvm/java-7-oracle/jre/bin/java
 # end oracle java installation
 
 # install basic packages for magicvisionlab development
@@ -102,6 +101,3 @@ RUN apt-get install -y \
     python-scipy \
     swig \
     ant
-
-
-
