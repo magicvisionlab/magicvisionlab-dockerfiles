@@ -32,13 +32,14 @@ RUN pip --no-input --exists-action=w install --upgrade pip
 
 # Fake a fuse install, since build cannot run in privileged mode
 RUN apt-get install libfuse2 && \
-    cd /tmp ; apt-get download fuse && \
-    cd /tmp ; dpkg-deb -x fuse_* . && \
-    cd /tmp ; dpkg-deb -e fuse_* && \
-    cd /tmp ; rm fuse_*.deb && \
-    cd /tmp ; echo -en '#!/bin/bash\nexit 0\n' > DEBIAN/postinst && \
-    cd /tmp ; dpkg-deb -b . /fuse.deb && \
-    cd /tmp ; dpkg -i /fuse.deb
+    cd /tmp && apt-get download fuse && \
+    cd /tmp && dpkg-deb -x fuse_* . && \
+    cd /tmp && dpkg-deb -e fuse_* && \
+    cd /tmp && rm fuse_*.deb && \
+    cd /tmp && echo -en '#!/bin/bash\nexit 0\n' > DEBIAN/postinst && \
+    cd /tmp && dpkg-deb -b . /fuse.deb && \
+    cd /tmp && dpkg -i /fuse.deb && \
+    rm /fuse.deb
 # end hack
 
 # install oracle java 1.7
