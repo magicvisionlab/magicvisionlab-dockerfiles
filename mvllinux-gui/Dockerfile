@@ -3,15 +3,8 @@ MAINTAINER ueck@net-labs.de
 ENV DEBIAN_FRONTEND noninteractive
 
 # LOCAL BUILD ONLY - USE AptProxy
-#RUN echo "Use Localhost as AptProxy http://"`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`":3142"
-#RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | sudo tee /etc/apt/apt.conf.d/02proxy
-
-# enable ubuntu multiverse
-RUN echo deb http://archive.ubuntu.com/ubuntu trusty multiverse >> /etc/apt/sources.list && \
-    echo deb-src http://archive.ubuntu.com/ubuntu trusty multiverse >> /etc/apt/sources.list && \
-    echo deb http://security.ubuntu.com/ubuntu trusty-security multiverse >> /etc/apt/sources.list && \
-    echo deb-src http://security.ubuntu.com/ubuntu trusty-security multiverse >> /etc/apt/sources.list && \
-    apt-get update
+RUN echo "Use Localhost as AptProxy http://"`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`":3142"
+RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | sudo tee /etc/apt/apt.conf.d/02proxy
 
 # install x-windows subsystem
 RUN apt-get -y --force-yes install x-window-system && \
@@ -54,4 +47,4 @@ RUN apt-get install -y \
     libgtkglextmm-x11-1.2-dev
 
 # CLEANUP LOCAL PROXY
-#RUN rm -f /etc/apt/apt.conf.d/02proxy
+RUN rm -f /etc/apt/apt.conf.d/02proxy
