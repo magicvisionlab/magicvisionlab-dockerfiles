@@ -1,10 +1,10 @@
-FROM magicvisionlab/mvllinux-base
+FROM magicvisionlab/mvllinux-base32
 MAINTAINER ueck@net-labs.de
 ENV DEBIAN_FRONTEND noninteractive
 
 # LOCAL BUILD ONLY - USE AptProxy
 RUN echo "Use Localhost as AptProxy http://"`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`":3142"
-RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | sudo tee /etc/apt/apt.conf.d/02proxy
+RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | tee /etc/apt/apt.conf.d/02proxy
 
 # install x-windows subsystem
 RUN apt-get -y --force-yes install x-window-system && \

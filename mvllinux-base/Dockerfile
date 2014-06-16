@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM magicvisionlab/ubuntu32:14.04
 MAINTAINER ueck@net-labs.de
 ENV DEBIAN_FRONTEND noninteractive
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
@@ -6,9 +6,11 @@ ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 # add localized apt sources.list
 ADD conf/sources.list /etc/apt/sources.list
 
+RUN apt-get install -y net-tools
+
 # LOCAL BUILD ONLY - USE AptProxy
 RUN echo "Use Localhost as AptProxy http://"`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`":3142"
-RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | sudo tee /etc/apt/apt.conf.d/02proxy
+RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | tee /etc/apt/apt.conf.d/02proxy
 
 ## install ubuntu packages
 RUN apt-get update; \
@@ -44,9 +46,9 @@ RUN apt-get install libfuse2 && \
 
 # install oracle java 1.7
 WORKDIR /tmp
-RUN wget --progress=bar --no-check-certificate -O /tmp/jdk-7u60-linux-x64.tar.gz \
-         --header "Cookie: oraclelicense=a" http://download.oracle.com/otn-pub/java/jdk/7u60-b19/jdk-7u60-linux-x64.tar.gz && \
-    tar xzf /tmp/jdk-7u60-linux-x64.tar.gz && \
+RUN wget --progress=bar --no-check-certificate -O /tmp/jdk-7u60-linux-i586.tar.gz \
+         --header "Cookie: oraclelicense=a" http://download.oracle.com/otn-pub/java/jdk/7u60-b19/jdk-7u60-linux-i586.tar.gz && \
+    tar xzf /tmp/jdk-7u60-linux-i586.tar.gz && \
     mkdir -p /usr/lib/jvm/java-7-oracle && \
     mv jdk1.7.0_60/jre /usr/lib/jvm/java-7-oracle/jre && \
     mv jdk1.7.0_60/lib /usr/lib/jvm/java-7-oracle/lib && \
@@ -54,7 +56,7 @@ RUN wget --progress=bar --no-check-certificate -O /tmp/jdk-7u60-linux-x64.tar.gz
     mv jdk1.7.0_60/bin /usr/lib/jvm/java-7-oracle/bin && \
     mv jdk1.7.0_60/man /usr/lib/jvm/java-7-oracle/man && \
     mv jdk1.7.0_60/db /usr/lib/jvm/java-7-oracle/db && \
-    rm -rf jdk1.7.0_60 && rm /tmp/jdk-7u60-linux-x64.tar.gz && \
+    rm -rf jdk1.7.0_60 && rm /tmp/jdk-7u60-linux-i586.tar.gz && \
     chown root:root -R /usr/lib/jvm/java-7-oracle && \
     update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-7-oracle/jre/bin/java 1 && \
     update-alternatives --set java /usr/lib/jvm/java-7-oracle/jre/bin/java
