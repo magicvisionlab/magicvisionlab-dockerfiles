@@ -1,4 +1,4 @@
-FROM magicvisionlab/mvllinux-base32
+FROM magicvisionlab/mvllinux-base-i386
 MAINTAINER ueck@net-labs.de
 ENV DEBIAN_FRONTEND noninteractive
 
