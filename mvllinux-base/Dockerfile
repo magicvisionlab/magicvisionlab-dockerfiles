@@ -30,6 +30,8 @@ RUN apt-get install -y \
     supervisor \
     wget
 
+RUN add-apt-repository -y ppa:mc3man/trusty-media
+
 RUN pip --no-input --exists-action=w install --upgrade pip
 
 # Fake a fuse install, since build cannot run in privileged mode
@@ -63,7 +65,7 @@ RUN wget --progress=bar --no-check-certificate -O /tmp/jdk-7u60-linux-i586.tar.g
 # end oracle java installation
 
 # install basic packages for magicvisionlab development
-RUN apt-get install -y \
+RUN apt-get install --force-yes -y \
     libzmq-dev \
     libboost-all-dev \
     libatlas-dev \
@@ -102,7 +104,63 @@ RUN apt-get install -y \
     python-numpy \
     python-scipy \
     swig \
-    ant
+    ant \
+    checkinstall \
+    cmake \
+    pkg-config \
+    yasm \
+    libjasper-dev \
+    libswscale-dev \
+    libdc1394-22-dev \
+    libxine-dev \
+    libgstreamer0.10-dev \
+    libgstreamer-plugins-base0.10-dev \
+    libv4l-dev \
+    python-numpy \
+    libtbb-dev \
+    libgtk2.0-dev \
+    libfaac-dev \
+    libmp3lame-dev \
+    libopencore-amrnb-dev \
+    libopencore-amrwb-dev \
+    libtheora-dev \
+    libvorbis-dev \
+    libxvidcore-dev \
+    x264 \
+    v4l-utils \
+    x-window-system \
+    binutils \
+    x11vnc \
+    mesa-utils \
+    libgtk2.0-0 \
+    twm \
+    cmake-gui \
+    libqt4-dev \
+    libqt4-dev-bin \
+    libqt4-opengl-dev \
+    libqt4-qt3support \
+    libqt4-sql-sqlite \
+    libqtwebkit-dev \
+    freeglut3-dev \
+    libftgl-dev \
+    libfreetype6-dev \
+    libglew-dev \
+    libglfw-dev \
+    libwxgtk3.0-dev \
+    libmotif-dev \
+    libx11-dev \
+    libxft-dev \
+    libxi-dev \
+    libxslt1-dev \
+    mesa-common-dev \
+    qtbase5-dev \
+    qtbase5-dev-tools \
+    libxmu-dev \
+    libglade2-0 \
+    libglademm-2.4-1c2a \
+    libgtkmm-2.4-1c2a \
+    libgtkglextmm-x11-1.2-dev
+
 
 # CLEANUP LOCAL PROXY
 RUN rm -f /etc/apt/apt.conf.d/02proxy
