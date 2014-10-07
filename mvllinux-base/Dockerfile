@@ -6,11 +6,12 @@ ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 # add localized apt sources.list
 ADD conf/sources.list /etc/apt/sources.list
 
-RUN apt-get install -y net-tools
+RUN apt-get update; \
+    apt-get install -y apt-utils net-tools
 
 # LOCAL BUILD ONLY - USE AptProxy
-RUN echo "Use Localhost as AptProxy http://"`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`":3142"
-RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | tee /etc/apt/apt.conf.d/02proxy
+#RUN echo "Use Localhost as AptProxy http://"`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`":3142"
+#RUN echo 'Acquire::http { Proxy "http://'`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`':3142"; };' | tee /etc/apt/apt.conf.d/02proxy
 
 ## install ubuntu packages
 RUN apt-get update; \
